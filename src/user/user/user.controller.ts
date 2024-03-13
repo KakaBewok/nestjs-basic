@@ -5,14 +5,17 @@ import { Request } from 'express';
 export class UserController {
 
     @Get("/hello")
-    getByIdQuery(@Query("name") name: string): string {
-        return `Hello ${name || 'Guest'}`;
+    getByIdQuery(
+        @Query("first_name") firstName: string,
+        @Query("last_name") lastName: string
+    ): string {
+        return `Hello ${firstName || ''} ${lastName || ''}`;
     }
 
-    // @Get("/:id")
-    // getByIdParam(@Param("id") id: string): string {
-    //     return `get param ${id}`;
-    // }
+    @Get("/:id")
+    getByIdParam(@Param("id") id: string): string {
+        return `get param ${id}`;
+    }
 
     @Post()
     post(): string {
