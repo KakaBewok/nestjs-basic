@@ -3,6 +3,10 @@ import { Request, Response } from 'express';
 
 @Controller('/api/users')
 export class UserController {
+    @Get("/test")
+    sayHello(firstName: string, lastName: string) {
+      return `Hello ${firstName} ${lastName}`;
+    }
 
     //using template engine
     @Get("/view/hello")
