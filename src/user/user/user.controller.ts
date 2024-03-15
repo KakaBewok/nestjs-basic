@@ -1,8 +1,36 @@
-import { Controller, Get, Header, HttpCode, HttpRedirectResponse, Param, Post, Query, Redirect, Req } from '@nestjs/common';
-import { Request } from 'express';
+import { Controller, Get, Header, HttpCode, HttpRedirectResponse, Param, Post, Query, Redirect, Req, Res } from '@nestjs/common';
+import { Request, Response } from 'express';
 
 @Controller('/api/users')
 export class UserController {
+
+    //using template engine
+    @Get("/view/hello")
+    viewHello(
+        @Query('name') name: string,
+        @Res() response: Response
+    ){
+        response.render('index.html', {
+            title: 'Template Engine Mustache',
+            name: name
+        });
+    }
+
+    //cookie
+    @Get("/set-cookie")
+    setCookie(
+        @Query('name') name: string,
+        @Res() response: Response
+    ){
+        response.cookie('name', name);
+        response.status(200).send('Success set cookie');
+    }
+    @Get('/get-cookie')
+    getCookie(
+        @Req() request: Request
+    ) : string {
+        return request.cookies['name'];
+    }
 
     //response
     @Get("/sample-response")
@@ -21,6 +49,15 @@ export class UserController {
             url: "/api/users/sample-response",
             statusCode: 301,  
         }
+    }
+
+    //async
+    @Get("/hello")
+    async getAsync(
+        @Query("first_name") firstName: string,
+        @Query("last_name") lastName: string
+    ): Promise<string> {
+        return `Hello ${firstName || ''} ${lastName || ''}`;
     }
 
     //query
